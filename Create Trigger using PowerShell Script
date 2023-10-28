@@ -1,0 +1,28 @@
+# Authenticate to your Azure account
+Connect-AzAccount
+
+# Set your Azure Data Factory details
+$resourceGroupName = "YourResourceGroup"
+$dataFactoryName = "YourDataFactoryName"
+$triggerName = "YourTriggerName"
+
+# Define the trigger properties
+$triggerProperties = @{
+    name = $triggerName
+    properties = @{
+        type = "TumblingWindowTrigger"
+        typeProperties = @{
+            frequency = "Hour"
+            interval = 1
+            startTime = "2023-10-26T08:00:00Z"  # Replace with your desired start time
+            retryPolicy = @{
+                intervalInSeconds = 30
+            }
+        }
+        dependsOn = @()
+        actions = @()
+    }
+}
+
+# Create the trigger in the Azure Data Factory
+New-AzDataFactoryV2Trigger -ResourceGroupName $resourceGroupName -DataFactoryName $dataFactoryName -Name $triggerName -Trigger $triggerProperties
