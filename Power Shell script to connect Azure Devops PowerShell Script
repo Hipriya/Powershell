@@ -1,0 +1,27 @@
+import requests
+
+# Replace with your Azure DevOps organization, project, repository, and file path
+org = "your_organization"
+project = "your_project"
+repository = "your_repository"
+file_path = "path/to/your/file.txt"
+pat = "your_personal_access_token"  # Replace with your PAT or use other authentication method
+
+# Construct the API URL
+url = f"https://dev.azure.com/RadiometerGIT/_git/sendx-qdbproductiondataInsights?path=/trigger/trg_tumblingtrigger_1day.json"
+
+# Define the request headers, including the PAT for authentication
+headers = {
+    "Authorization": f"Basic {pat}",
+}
+
+# Make the GET request
+response = requests.get(url, headers=headers)
+
+# Check for a successful response
+if response.status_code == 200:
+    file_content = response.json().get("content", "")
+    # Process the file content as needed
+    print(file_content)
+else:
+    print(f"Failed to retrieve file content. Status code: {response.status_code}")
